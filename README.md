@@ -86,7 +86,7 @@ corrected.
 ## Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/cer-scm.git
+git clone https://github.com/Amruthamsha/cer-scm.git
 cd cer-scm
 pip install -r requirements.txt
 ```
