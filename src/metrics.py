@@ -29,10 +29,10 @@ def compute_metrics(history: list, initial_balance: float, final_pv: float) -> d
 
     sh = (np.mean(rets) / (np.std(rets) + 1e-9)) * np.sqrt(252)
 
-    # FIX (audit): downside deviation computed over ALL returns (positive
+    # Post-analysis fix: downside deviation computed over ALL returns (positive
     # returns contribute zero downside), not std() over only the negative
     # subset. The latter is statistically invalid on small/degenerate
-    # negative-return samples — e.g. a single negative return gives std=0,
+    # negative-return samples, e.g. a single negative return gives std=0,
     # producing a spuriously huge Sortino ratio.
     downside_sq = np.minimum(rets, 0.0) ** 2
     downside_deviation = np.sqrt(np.mean(downside_sq))

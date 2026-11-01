@@ -1,5 +1,5 @@
 """
-Structural Causal Model over the learned causal graph — linear or neural
+Structural Causal Model over the learned causal graph, linear or neural
 structural equations, fit via Pearl's abduction-action-prediction do-calculus.
 """
 
@@ -18,9 +18,9 @@ class StructuralCausalModel:
     learned causal graph predict it; linear or a small MLP) and exposes
     Pearl's 3-step do-calculus for generating counterfactual states:
 
-    1. Abduction  — infer exogenous noise U_i from the observed row
-    2. Action     — apply do(intervention_var = intervention_value)
-    3. Prediction — propagate through the graph in topological order
+    1. Abduction:  infer exogenous noise U_i from the observed row
+    2. Action:     apply do(intervention_var = intervention_value)
+    3. Prediction: propagate through the graph in topological order
     """
 
     def __init__(self, causal_graph: np.ndarray, var_names: list, mode: str = "linear"):
@@ -83,7 +83,7 @@ class StructuralCausalModel:
     def generate_counterfactual_state(
         self, observed_row: dict, intervention_var: str, intervention_value: float
     ) -> dict:
-        # Step 1 — Abduction: recover exogenous noise
+        # Step 1, Abduction: recover exogenous noise
         noise = {}
         for var in self.var_names:
             m = self.models.get(var)
@@ -97,11 +97,11 @@ class StructuralCausalModel:
                 pred = float(m["reg"].predict(pv)[0])
                 noise[var] = observed_row.get(var, pred) - pred
 
-        # Step 2 — Action: apply intervention
+        # Step 2, Action: apply intervention
         cf = dict(observed_row)
         cf[intervention_var] = intervention_value
 
-        # Step 3 — Prediction: propagate forward in topological order,
+        # Step 3, Prediction: propagate forward in topological order,
         # restricted to descendants of the intervened variable
         int_idx = self.var_names.index(intervention_var)
         descendants = self._get_descendants(int_idx)

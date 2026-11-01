@@ -1,10 +1,11 @@
 """
 Causal structure learning over financial time-series features (PC / NOTEARS-MLP).
 
-Includes a fix for a degenerate-mechanism bug found in manuscript audit: the
-synthetic 'action' proxy used for structure learning must have explicit,
+Includes a post-analysis fix (not used for the results reported in the paper):
+the synthetic 'action' proxy used for structure learning must have explicit,
 non-empty descendants, or do-interventions on it collapse to a no-op.
-See `_ensure_action_has_descendants` below.
+See `_ensure_action_has_descendants` below. This is a stopgap. Handling
+the case properly is an open research question.
 """
 
 import numpy as np
@@ -35,7 +36,7 @@ def _ensure_action_has_descendants(graph: np.ndarray, var_names: list):
     Force edges action -> {volume_ratio, returns_lag1} if the learned graph
     gives 'action' no descendants at all.
 
-    Why this is needed: 'action' is constructed as np.sign(momentum_5) — a
+    Why this is needed: 'action' is constructed as np.sign(momentum_5), a
     deterministic function of a variable already in the graph. PC/NOTEARS
     assume faithfulness, which breaks under exact determinism: action carries
     zero information beyond momentum_5, so the learner routinely assigns it
@@ -60,7 +61,7 @@ def _ensure_action_has_descendants(graph: np.ndarray, var_names: list):
 
 
 def diagnose_action_descendants(graph: np.ndarray, var_names: list) -> int:
-    """Size of descendants(action) in the learned graph — audit diagnostic,
+    """Size of descendants(action) in the learned graph. Diagnostic
     intended to be logged per-asset to confirm the fix holds across the
     full ticker universe."""
     if "action" not in var_names:
