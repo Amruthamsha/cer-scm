@@ -7,3 +7,6 @@ journal_checkpoints/
 .ipynb_checkpoints/
 .DS_Store
 *.egg-info/
+
+# keep the README figures
+!docs/figures/*.png

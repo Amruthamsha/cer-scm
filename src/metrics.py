@@ -8,6 +8,11 @@ def compute_metrics(history: list, initial_balance: float, final_pv: float) -> d
     """
     Compute total return, Sharpe, Sortino, Calmar, max drawdown, win rate,
     and turnover from a list of {'step', 'action', 'pv', 'reward'} records.
+
+    Sharpe is sqrt(252) * mean / std of daily rewards (Section 5.4 of the paper).
+    The Sortino ratio uses the standard downside deviation over all returns.
+    The paper does not report Sortino, because with few losing days the ratio
+    becomes unstable; the notebooks computed it with an earlier formula.
     """
     if not history:
         return {
