@@ -36,8 +36,9 @@ The counterfactual reward is the SCM's counterfactual return scaled by a trust f
 
 Because synthetic rewards invite overestimation, CausalDQN uses a **Variance-Penalized CQL** target that needs only quantities the Bellman update already computes:
 
-$$\hat Q_{\mathrm{tgt}} = r + \gamma \left[ Q_{\theta^-}(s', a^*) - \alpha_{\mathrm{CQL}} \, \sigma_{a \in \mathcal{A}} Q_{\theta^-}(s', a) \right], \qquad a^* = \arg\max_a Q_\theta(s', a)$$
-
+```math
+\hat Q_{\mathrm{tgt}} = r + \gamma \left[ Q_{\theta^{-}}(s', a^{\ast}) - \alpha_{\mathrm{CQL}} \, \sigma_{a \in \mathcal{A}} Q_{\theta^{-}}(s', a) \right], \qquad a^{\ast} = \arg\max_a Q_\theta(s', a)
+```
 CER-SCM is implemented as a mixin around the replay and update logic, so it attaches to an off-policy backbone without changing the backbone itself.
 
 ## Results
